@@ -44,15 +44,20 @@ public class LoginView {
 
             DataStore.currentUser = user.getName();
             DataStore.currentUserEmail = user.getEmail();
+            DataStore.currentUserRole = user.getRole();
 
-            message.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-            message.setText("Login successful.");
-
-            BrowseView.show(stage);
+            if (user.getRole().equals("Admin")) {
+                AdminView.show(stage);
+            } else {
+                BrowseView.show(stage);
+            }
         });
 
         Hyperlink register = new Hyperlink("Create Account");
         register.setOnAction(e -> RegisterView.show(stage));
+
+        Label adminInfo = new Label("Admin login: admin@asu.edu / admin123");
+        adminInfo.setStyle("-fx-text-fill: gray;");
 
         VBox root = new VBox(
                 12,
@@ -62,7 +67,8 @@ public class LoginView {
                 password,
                 login,
                 register,
-                message
+                message,
+                adminInfo
         );
 
         root.setAlignment(Pos.CENTER);
