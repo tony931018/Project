@@ -13,6 +13,9 @@ public class RegisterView {
         Label title = new Label("Create Account");
         title.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
 
+        Label message = new Label("");
+        message.setStyle("-fx-font-weight: bold;");
+
         TextField name = field("Name");
         TextField email = field("Email");
 
@@ -37,10 +40,8 @@ public class RegisterView {
 
         signUp.setOnAction(e -> {
             if (name.getText().isEmpty() || email.getText().isEmpty() || password.getText().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText("Please complete all fields.");
-                alert.showAndWait();
+                message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                message.setText("Please complete all fields.");
                 return;
             }
 
@@ -55,10 +56,8 @@ public class RegisterView {
             DataStore.users.add(new User(name.getText(), email.getText(), role));
             DataStore.currentUser = name.getText();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setContentText("Account created successfully.");
-            alert.showAndWait();
+            message.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+            message.setText("Account created successfully. Going to Browse page...");
 
             BrowseView.show(stage);
         });
@@ -66,7 +65,7 @@ public class RegisterView {
         Hyperlink login = new Hyperlink("Already have an account? Log In");
         login.setOnAction(e -> LoginView.show(stage));
 
-        VBox root = new VBox(12, title, name, email, password, roles, signUp, login);
+        VBox root = new VBox(12, title, name, email, password, roles, signUp, login, message);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(30));
 
