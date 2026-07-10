@@ -56,9 +56,6 @@ public class LoginView {
         Hyperlink register = new Hyperlink("Create Account");
         register.setOnAction(e -> RegisterView.show(stage));
 
-        Label adminInfo = new Label("Admin login: admin@asu.edu / admin123");
-        adminInfo.setStyle("-fx-text-fill: gray;");
-
         VBox root = new VBox(
                 12,
                 title,
@@ -67,8 +64,7 @@ public class LoginView {
                 password,
                 login,
                 register,
-                message,
-                adminInfo
+                message
         );
 
         root.setAlignment(Pos.CENTER);
