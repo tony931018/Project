@@ -48,7 +48,7 @@ public class MyListingsView {
         for (Equipment item : copyList) {
             Button details = new Button("View Details");
 
-            // Important: this version does NOT show Rent Now
+            
             details.setOnAction(e -> EquipmentDetailsView.showOwnerDetails(stage, item));
 
             Button delete = new Button("Delete Listing");
