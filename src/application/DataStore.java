@@ -11,6 +11,7 @@ public class DataStore {
 
     public static String currentUser = "";
     public static String currentUserEmail = "";
+    public static String currentUserRole = "";
 
     public static boolean profileCompleted = false;
     public static String profileName = "";
@@ -28,13 +29,17 @@ public class DataStore {
 
         loaded = true;
 
-        // Only sample equipment is loaded.
-        // Users must register before logging in.
+        // Admin account
+        users.add(new User("Admin", "admin@asu.edu", "admin123", "Admin"));
+
+        // Sample equipment
         equipmentList.add(new Equipment("Canon Camera", "Camera & Photo", "Like New", "Samuel", 700));
         equipmentList.add(new Equipment("MacBook Pro", "Computer & Laptop", "Good", "Samuel", 1200));
         equipmentList.add(new Equipment("LG 24 Monitor", "Electronics Devices", "Used", "Samuel", 300));
         equipmentList.add(new Equipment("Gaming Controller", "Gaming Console", "Good", "Samuel", 80));
         equipmentList.add(new Equipment("Samsung Phone", "Electronics Devices", "Used", "Samuel", 500));
+
+        reports.add("User: Mark G. | Listing: Canon Camera | Issue: Broken item | Status: Pending");
     }
 
     public static User findUser(String email, String password) {
@@ -65,5 +70,18 @@ public class DataStore {
         }
 
         return total;
+    }
+
+    public static void clearCurrentUser() {
+        currentUser = "";
+        currentUserEmail = "";
+        currentUserRole = "";
+
+        profileCompleted = false;
+        profileName = "";
+        profileAddress = "";
+        profileCity = "";
+        profileEmail = "";
+        profilePhone = "";
     }
 }
