@@ -1,0 +1,75 @@
+# SunDevil Gear Share System
+
+# Project Overview
+
+SunDevil Gear Share System is a JavaFX-based equipment rental sharing application for ASU students. The purpose of this project is to allow students to rent and share equipment such as cameras, laptops, monitors, gaming devices, and other electronics.
+
+The system supports three main user roles: Renter, Owner, and Admin. Each role has different functions in the application.
+
+# User Roles
+
+# Renter
+Renters can:
+- Register and login
+- Browse available equipment
+- Search and filter equipment
+- View equipment details
+- Rent equipment
+- View rented items
+- Return rented items
+- Report items issues
+
+# Owner
+Owners can:
+- Register and login
+- Complete their profile
+- Add equipment listings
+- View their own listings
+- View listing details
+- Delete their listings
+
+# Admin
+Admins can:
+- Login to the admin dashboard
+- View users
+- View equipment listings
+- View rentals
+- View reported issues
+- View revenue and system summary
+
+# Main Features
+
+- Login and registration system
+- Role-based navigation
+- Equipment browsing page
+- Equipment details page
+- Rental function
+- Return item function
+- Report issue function
+- Owner listing management
+- Profile page
+- Admin dashboard
+- Temporary data storage using DataStore
+
+# Main Classes
+
+- Main.java: Starts the JavaFX application.
+- LoginView.java: Handles user login.
+- RegisterView.jave: Allows new users to create an account.
+- BrowseView.java: Displays available equipment.
+- EquipmentDetailsView.java: Shows details for selected equipment.
+- EquipmentListingView.java: Allows owners to add new listings.
+- MyListingsView.java: Allows owners to manage their listings.
+- MyRentalsView.java: Allows users to view rentals, return items, and report issues.
+- ProfileView.java: Allows users to complete profile information.
+- AdminView.java: Displays the admin dashboard.
+- Navigation.jave: Controls the navigation menu.
+- User.java: Stores user information.
+- Equipment.jav`: Stores equipment information.
+- Rental.java: Stores rental information.
+- DataStore.java: Stores temporary application data.
+
+# How to Run the Project
+
+This project was developed using Java and JavaFX in VS Code.
+
