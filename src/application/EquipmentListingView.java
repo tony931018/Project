@@ -17,6 +17,21 @@ public class EquipmentListingView {
         Label message = new Label("");
         message.setStyle("-fx-font-weight: bold;");
 
+        if (!DataStore.currentUserRole.equals("Owner")) {
+            message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+            message.setText("Only owners can add equipment listings.");
+
+            Button back = new Button("Back to Browse");
+            back.setOnAction(e -> BrowseView.show(stage));
+
+            VBox content = new VBox(15, title, message, back);
+            content.setPadding(new Insets(30));
+
+            root.getChildren().add(content);
+            stage.setScene(new Scene(root, 1000, 650));
+            return;
+        }
+
         if (!DataStore.profileCompleted) {
             message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
             message.setText("Please complete your profile before adding a listing.");
@@ -99,9 +114,6 @@ public class EquipmentListingView {
 
                 DataStore.equipmentList.add(item);
                 DataStore.myListings.add(item);
-
-                message.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-                message.setText("Listing published.");
 
                 MyListingsView.show(stage);
 
