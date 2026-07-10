@@ -117,7 +117,7 @@ public class AdminView {
         adminName.setStyle("-fx-text-fill: white; -fx-font-weight: bold;");
 
         Button logout = new Button("Logout");
-        logout.setStyle("-fx-background-color: #FFC627; -fx-font-weight: bold;");
+        logout.setStyle("-fx-background-color: #070707; -fx-font-weight: bold;");
         logout.setOnAction(e -> {
             DataStore.clearCurrentUser();
             LoginView.show(stage);
