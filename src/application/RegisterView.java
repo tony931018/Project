@@ -45,6 +45,12 @@ public class RegisterView {
                 return;
             }
 
+            if (DataStore.emailExists(email.getText())) {
+                message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                message.setText("This email is already registered.");
+                return;
+            }
+
             String role;
 
             if (owner.isSelected()) {
@@ -53,19 +59,33 @@ public class RegisterView {
                 role = "Renter";
             }
 
-            DataStore.users.add(new User(name.getText(), email.getText(), role));
-            DataStore.currentUser = name.getText();
+            User newUser = new User(name.getText(), email.getText(), password.getText(), role);
+            DataStore.users.add(newUser);
 
             message.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-            message.setText("Account created successfully. Going to Browse page...");
+            message.setText("Account created successfully. Please go back and log in.");
 
-            BrowseView.show(stage);
+            name.clear();
+            email.clear();
+            password.clear();
+            renter.setSelected(true);
         });
 
         Hyperlink login = new Hyperlink("Already have an account? Log In");
         login.setOnAction(e -> LoginView.show(stage));
 
-        VBox root = new VBox(12, title, name, email, password, roles, signUp, login, message);
+        VBox root = new VBox(
+                12,
+                title,
+                name,
+                email,
+                password,
+                roles,
+                signUp,
+                login,
+                message
+        );
+
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(30));
 
