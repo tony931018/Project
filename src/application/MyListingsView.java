@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MyListingsView {
     public static void show(Stage stage) {
         VBox root = new VBox();
-        root.getChildren().add(Navigation.create(stage));
+        root.getChildren().add(Navigation.create(stage, "My Listings"));
 
         Label title = new Label("My Listings");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
@@ -47,14 +47,18 @@ public class MyListingsView {
 
         for (Equipment item : copyList) {
             Button details = new Button("View Details");
-            details.setOnAction(e -> EquipmentDetailsView.show(stage, item));
+
+            // Important: this version does NOT show Rent Now
+            details.setOnAction(e -> EquipmentDetailsView.showOwnerDetails(stage, item));
 
             Button delete = new Button("Delete Listing");
             delete.setOnAction(e -> {
                 DataStore.equipmentList.remove(item);
                 DataStore.myListings.remove(item);
 
+                message.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
                 message.setText("Listing deleted.");
+
                 refreshListings(stage, list, message);
             });
 
@@ -62,7 +66,7 @@ public class MyListingsView {
 
             VBox card = new VBox(8, new Label(item.toString()), buttons);
             card.setPadding(new Insets(12));
-            card.setStyle("-fx-border-color: lightgray;");
+            card.setStyle("-fx-border-color: lightgray; -fx-border-radius: 8;");
 
             list.getChildren().add(card);
         }
