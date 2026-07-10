@@ -9,12 +9,10 @@ import javafx.stage.Stage;
 
 public class Navigation {
 
-    // This allows old code like Navigation.create(stage) to still work
     public static HBox create(Stage stage) {
         return create(stage, "");
     }
 
-    // This allows active page button color
     public static HBox create(Stage stage, String activePage) {
         Label logo = new Label("SUNDEVIL Gear Share");
         logo.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
@@ -24,7 +22,6 @@ public class Navigation {
         Button listings = button("My Listings", activePage);
         Button add = button("Add Listing", activePage);
         Button profile = button("Profile", activePage);
-        Button admin = button("Admin", activePage);
         Button logout = button("Logout", activePage);
 
         browse.setOnAction(e -> BrowseView.show(stage));
@@ -32,10 +29,22 @@ public class Navigation {
         listings.setOnAction(e -> MyListingsView.show(stage));
         add.setOnAction(e -> EquipmentListingView.show(stage));
         profile.setOnAction(e -> ProfileView.show(stage));
-        admin.setOnAction(e -> AdminView.show(stage));
-        logout.setOnAction(e -> LoginView.show(stage));
+        logout.setOnAction(e -> {
+            DataStore.clearCurrentUser();
+            LoginView.show(stage);
+        });
 
-        HBox nav = new HBox(10, logo, browse, rentals, listings, add, profile, admin, logout);
+        HBox nav = new HBox(10);
+        nav.getChildren().add(logo);
+
+        if (DataStore.currentUserRole.equals("Renter")) {
+            nav.getChildren().addAll(browse, rentals, profile, logout);
+        } else if (DataStore.currentUserRole.equals("Owner")) {
+            nav.getChildren().addAll(browse, rentals, listings, add, profile, logout);
+        } else {
+            nav.getChildren().addAll(browse, rentals, listings, add, profile, logout);
+        }
+
         nav.setPadding(new Insets(15));
         nav.setAlignment(Pos.CENTER_LEFT);
         nav.setStyle("-fx-background-color: #8C1D40;");
