@@ -8,12 +8,12 @@ import javafx.stage.Stage;
 
 public class EquipmentDetailsView {
 
-    // Browse page uses this version, so it shows Rent Now
+    
     public static void show(Stage stage, Equipment item) {
         showDetails(stage, item, true);
     }
 
-    // My Listings page uses this version, so it hides Rent Now
+   
     public static void showOwnerDetails(Stage stage, Equipment item) {
         showDetails(stage, item, false);
     }
@@ -81,9 +81,6 @@ public class EquipmentDetailsView {
                     rent
             );
         } else {
-            Label ownerNote = new Label("This is your listing. Rent Now is not available for your own listed item.");
-            ownerNote.setStyle("-fx-text-fill: #8C1D40; -fx-font-weight: bold;");
-            content.getChildren().add(ownerNote);
         }
 
         Button back = new Button("Back");
