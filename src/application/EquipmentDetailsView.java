@@ -7,67 +7,96 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class EquipmentDetailsView {
+
+    // Browse page uses this version, so it shows Rent Now
     public static void show(Stage stage, Equipment item) {
+        showDetails(stage, item, true);
+    }
+
+    // My Listings page uses this version, so it hides Rent Now
+    public static void showOwnerDetails(Stage stage, Equipment item) {
+        showDetails(stage, item, false);
+    }
+
+    private static void showDetails(Stage stage, Equipment item, boolean showRentButton) {
         VBox root = new VBox();
-        root.getChildren().add(Navigation.create(stage));
+        root.getChildren().add(Navigation.create(stage, "Browse"));
 
         Label title = new Label(item.getName());
         title.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
 
-        ComboBox<Integer> days = new ComboBox<>();
-        days.getItems().addAll(1, 2, 3, 5, 7, 14);
-        days.setValue(1);
+        Label message = new Label("");
+        message.setStyle("-fx-font-weight: bold;");
 
-        Label total = new Label();
-        updateTotal(total, item, days.getValue());
+        VBox content = new VBox();
+        content.setSpacing(12);
+        content.setPadding(new Insets(30));
 
-        days.setOnAction(e -> updateTotal(total, item, days.getValue()));
-
-        Button rent = new Button("Rent Now");
-        rent.setStyle("-fx-background-color: #8C1D40; -fx-text-fill: white; -fx-font-weight: bold;");
-
-        rent.setOnAction(e -> {
-            if (!item.isAvailable()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText("This item is already rented.");
-                alert.showAndWait();
-                return;
-            }
-
-            item.rent();
-            Rental rental = new Rental(item, DataStore.currentUser, days.getValue());
-            DataStore.rentals.add(rental);
-
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(null);
-            alert.setContentText("Rental confirmed.");
-            alert.showAndWait();
-
-            MyRentalsView.show(stage);
-        });
-
-        Button back = new Button("Back to Browse");
-        back.setOnAction(e -> BrowseView.show(stage));
-
-        VBox content = new VBox(
-                12,
+        content.getChildren().addAll(
                 title,
+                message,
                 new Label("Owner: " + item.getOwner()),
                 new Label("Category: " + item.getCategory()),
                 new Label("Condition: " + item.getCondition()),
                 new Label("Estimated Value: $" + String.format("%.2f", item.getValue())),
                 new Label("Daily Rate: $" + String.format("%.2f", item.getDailyRate())),
                 new Label("Deposit: $" + String.format("%.2f", item.getDeposit())),
-                new Label("Status: " + item.getStatus()),
-                new Label("Rental Duration:"),
-                days,
-                total,
-                rent,
-                back
+                new Label("Status: " + item.getStatus())
         );
 
-        content.setPadding(new Insets(30));
+        if (showRentButton) {
+            ComboBox<Integer> days = new ComboBox<>();
+            days.getItems().addAll(1, 2, 3, 5, 7, 14);
+            days.setValue(1);
+
+            Label total = new Label();
+            updateTotal(total, item, days.getValue());
+
+            days.setOnAction(e -> updateTotal(total, item, days.getValue()));
+
+            Button rent = new Button("Rent Now");
+            rent.setStyle("-fx-background-color: #8C1D40; -fx-text-fill: white; -fx-font-weight: bold;");
+
+            rent.setOnAction(e -> {
+                if (!item.isAvailable()) {
+                    message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                    message.setText("This item is already rented.");
+                    return;
+                }
+
+                item.rent();
+                Rental rental = new Rental(item, DataStore.currentUser, days.getValue());
+                DataStore.rentals.add(rental);
+
+                message.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                message.setText("Rental confirmed.");
+
+                MyRentalsView.show(stage);
+            });
+
+            content.getChildren().addAll(
+                    new Label("Rental Duration:"),
+                    days,
+                    total,
+                    rent
+            );
+        } else {
+            Label ownerNote = new Label("This is your listing. Rent Now is not available for your own listed item.");
+            ownerNote.setStyle("-fx-text-fill: #8C1D40; -fx-font-weight: bold;");
+            content.getChildren().add(ownerNote);
+        }
+
+        Button back = new Button("Back");
+        back.setOnAction(e -> {
+            if (showRentButton) {
+                BrowseView.show(stage);
+            } else {
+                MyListingsView.show(stage);
+            }
+        });
+
+        content.getChildren().add(back);
+
         root.getChildren().add(content);
 
         stage.setScene(new Scene(root, 1000, 650));
