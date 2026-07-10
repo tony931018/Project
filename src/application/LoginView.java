@@ -12,6 +12,9 @@ public class LoginView {
         Label title = new Label("SunDevil Gear Share System");
         title.setStyle("-fx-font-size: 25px; -fx-font-weight: bold;");
 
+        Label message = new Label("");
+        message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+
         TextField email = new TextField();
         email.setPromptText("Email");
         email.setMaxWidth(260);
@@ -26,10 +29,7 @@ public class LoginView {
 
         login.setOnAction(e -> {
             if (email.getText().isEmpty() || password.getText().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText("Please enter email and password.");
-                alert.showAndWait();
+                message.setText("Please enter email and password.");
             } else {
                 DataStore.currentUser = email.getText();
                 BrowseView.show(stage);
@@ -39,7 +39,7 @@ public class LoginView {
         Hyperlink register = new Hyperlink("Create Account");
         register.setOnAction(e -> RegisterView.show(stage));
 
-        VBox root = new VBox(12, title, new Label("Welcome Back"), email, password, login, register);
+        VBox root = new VBox(12, title, new Label("Welcome Back"), email, password, login, register, message);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(30));
 
