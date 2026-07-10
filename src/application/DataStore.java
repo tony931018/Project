@@ -10,6 +10,14 @@ public class DataStore {
     public static ArrayList<String> reports = new ArrayList<>();
 
     public static String currentUser = "Current User";
+
+    public static boolean profileCompleted = false;
+    public static String profileName = "";
+    public static String profileAddress = "";
+    public static String profileCity = "";
+    public static String profileEmail = "";
+    public static String profilePhone = "";
+
     private static boolean loaded = false;
 
     public static void loadSampleData() {
@@ -30,7 +38,7 @@ public class DataStore {
         equipmentList.add(new Equipment("Gaming Controller", "Gaming Console", "Good", "Samuel", 80));
         equipmentList.add(new Equipment("Samsung Phone", "Electronics Devices", "Used", "Samuel", 500));
 
-        reports.add("User: Mark G. | Listing: Camera | Issue: Broken | Status: Pending");
+        reports.add("User: Mark G. | Listing: Canon Camera | Issue: Broken item | Status: Pending");
     }
 
     public static double totalRevenue() {
