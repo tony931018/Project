@@ -81,6 +81,7 @@ public class EquipmentDetailsView {
                     rent
             );
         } else {
+            
         }
 
         Button back = new Button("Back");
