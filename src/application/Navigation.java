@@ -8,6 +8,13 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class Navigation {
+
+    // This allows old code like Navigation.create(stage) to still work
+    public static HBox create(Stage stage) {
+        return create(stage, "");
+    }
+
+    // This allows active page button color
     public static HBox create(Stage stage, String activePage) {
         Label logo = new Label("SUNDEVIL Gear Share");
         logo.setStyle("-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;");
