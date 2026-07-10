@@ -32,10 +32,10 @@ public class BrowseView {
         category.setValue("All");
 
         VBox cards = new VBox(10);
-        refresh(stage, cards, category.getValue(), search.getText(), message);
+        refresh(stage, cards, category.getValue(), search.getText());
 
-        search.setOnKeyReleased(e -> refresh(stage, cards, category.getValue(), search.getText(), message));
-        category.setOnAction(e -> refresh(stage, cards, category.getValue(), search.getText(), message));
+        search.setOnKeyReleased(e -> refresh(stage, cards, category.getValue(), search.getText()));
+        category.setOnAction(e -> refresh(stage, cards, category.getValue(), search.getText()));
 
         VBox content = new VBox(15, title, message, search, category, cards);
         content.setPadding(new Insets(25));
@@ -48,7 +48,7 @@ public class BrowseView {
         stage.setScene(new Scene(root, 1000, 650));
     }
 
-    private static void refresh(Stage stage, VBox cards, String category, String searchText, Label message) {
+    private static void refresh(Stage stage, VBox cards, String category, String searchText) {
         cards.getChildren().clear();
 
         String key;
@@ -68,7 +68,7 @@ public class BrowseView {
                     || item.getCondition().toLowerCase().contains(key);
 
             if (categoryMatch && searchMatch) {
-                cards.getChildren().add(card(stage, item, message));
+                cards.getChildren().add(card(stage, item));
                 found = true;
             }
         }
@@ -78,7 +78,7 @@ public class BrowseView {
         }
     }
 
-    private static VBox card(Stage stage, Equipment item, Label message) {
+    private static VBox card(Stage stage, Equipment item) {
         Label name = new Label(item.getName());
         name.setStyle("-fx-font-size: 17px; -fx-font-weight: bold;");
 
@@ -93,50 +93,7 @@ public class BrowseView {
         Button details = new Button("View Details");
         details.setOnAction(e -> EquipmentDetailsView.show(stage, item));
 
-        ComboBox<String> issueBox = new ComboBox<>();
-        issueBox.getItems().addAll(
-                "Broken item",
-                "Wrong information",
-                "Item is not available",
-                "Unsafe item",
-                "Owner problem",
-                "Other"
-        );
-        issueBox.setPromptText("Choose issue type");
-        issueBox.setMaxWidth(220);
-
-        TextField otherIssue = new TextField();
-        otherIssue.setPromptText("Describe issue if needed");
-        otherIssue.setMaxWidth(260);
-
-        Button report = new Button("Submit Report");
-        report.setOnAction(e -> {
-            if (issueBox.getValue() == null) {
-                message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
-                message.setText("Please choose an issue type first.");
-                return;
-            }
-
-            String issue = issueBox.getValue();
-
-            if (issue.equals("Other") && !otherIssue.getText().isEmpty()) {
-                issue = otherIssue.getText();
-            }
-
-            DataStore.reports.add(
-                    "User: " + DataStore.currentUser
-                            + " | Listing: " + item.getName()
-                            + " | Issue: " + issue
-                            + " | Status: Pending"
-            );
-
-            message.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-            message.setText("Report submitted for " + item.getName() + ".");
-        });
-
-        VBox reportBox = new VBox(6, issueBox, otherIssue, report);
-
-        VBox box = new VBox(7, name, info, price, details, new Label("Report Issue:"), reportBox);
+        VBox box = new VBox(7, name, info, price, details);
         box.setPadding(new Insets(15));
         box.setStyle("-fx-border-color: lightgray; -fx-border-radius: 8;");
 
