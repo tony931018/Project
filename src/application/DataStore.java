@@ -29,10 +29,10 @@ public class DataStore {
 
         loaded = true;
 
-        // Admin account
-        users.add(new User("Admin", "admin@asu.edu", "admin123", "Admin"));
+        
+        users.add(new User("Admin", "admin@asu.edu", "123", "Admin"));
 
-        // Sample equipment
+        
         equipmentList.add(new Equipment("Canon Camera", "Camera & Photo", "Like New", "Samuel", 700));
         equipmentList.add(new Equipment("MacBook Pro", "Computer & Laptop", "Good", "Samuel", 1200));
         equipmentList.add(new Equipment("LG 24 Monitor", "Electronics Devices", "Used", "Samuel", 300));
