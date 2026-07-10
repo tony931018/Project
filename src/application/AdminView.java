@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class AdminView {
     public static void show(Stage stage) {
         VBox root = new VBox();
-        root.getChildren().add(Navigation.create(stage));
+        root.getChildren().add(Navigation.create(stage, "Admin"));
 
         Label title = new Label("Admin Dashboard");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
@@ -67,6 +67,10 @@ public class AdminView {
         Button reports = new Button("View Reports");
         reports.setOnAction(e -> {
             String text = "Reported Issues:\n\n";
+
+            if (DataStore.reports.isEmpty()) {
+                text += "No reports.";
+            }
 
             for (String report : DataStore.reports) {
                 text += "- " + report + "\n";
