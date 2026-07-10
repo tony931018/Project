@@ -9,10 +9,29 @@ import javafx.stage.Stage;
 public class EquipmentListingView {
     public static void show(Stage stage) {
         VBox root = new VBox();
-        root.getChildren().add(Navigation.create(stage));
+        root.getChildren().add(Navigation.create(stage, "Add Listing"));
 
         Label title = new Label("Add Equipment Listing");
         title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+
+        Label message = new Label("");
+        message.setStyle("-fx-font-weight: bold;");
+
+        if (!DataStore.profileCompleted) {
+            message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+            message.setText("Please complete your profile before adding a listing.");
+
+            Button goProfile = new Button("Go to Profile");
+            goProfile.setStyle("-fx-background-color: #FFC627; -fx-font-weight: bold;");
+            goProfile.setOnAction(e -> ProfileView.show(stage));
+
+            VBox content = new VBox(15, title, message, goProfile);
+            content.setPadding(new Insets(30));
+
+            root.getChildren().add(content);
+            stage.setScene(new Scene(root, 1000, 650));
+            return;
+        }
 
         TextField name = field("Equipment Name");
 
@@ -46,11 +65,12 @@ public class EquipmentListingView {
                                 + " | Deposit: $"
                                 + String.format("%.2f", itemValue * 0.20)
                 );
+
+                message.setText("");
+
             } catch (Exception ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText("Enter a valid value.");
-                alert.showAndWait();
+                message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                message.setText("Enter a valid value.");
             }
         });
 
@@ -63,10 +83,8 @@ public class EquipmentListingView {
                     || condition.getValue() == null
                     || value.getText().isEmpty()) {
 
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText("Please complete all fields.");
-                alert.showAndWait();
+                message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                message.setText("Please complete all fields.");
                 return;
             }
 
@@ -75,29 +93,25 @@ public class EquipmentListingView {
                         name.getText(),
                         category.getValue(),
                         condition.getValue(),
-                        DataStore.currentUser,
+                        DataStore.profileName,
                         Double.parseDouble(value.getText())
                 );
 
                 DataStore.equipmentList.add(item);
                 DataStore.myListings.add(item);
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText(null);
-                alert.setContentText("Listing published.");
-                alert.showAndWait();
+                message.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                message.setText("Listing published.");
 
                 MyListingsView.show(stage);
 
             } catch (Exception ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setContentText("Estimated value must be a number.");
-                alert.showAndWait();
+                message.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                message.setText("Estimated value must be a number.");
             }
         });
 
-        VBox content = new VBox(12, title, name, category, condition, value, previewBtn, preview, publish);
+        VBox content = new VBox(12, title, message, name, category, condition, value, previewBtn, preview, publish);
         content.setPadding(new Insets(30));
 
         root.getChildren().add(content);
